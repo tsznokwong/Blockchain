@@ -2,7 +2,7 @@ import Foundation
 
 public class BlockChain<Element: Hashable>: CustomStringConvertible {
     public private(set) var chain: [Block<Element>]
-    private let difficulty = 6
+    private let difficulty = 7
     
     public init(genesisBlock: Block<Element>) {
         self.chain = [genesisBlock]

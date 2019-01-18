@@ -5,15 +5,8 @@ import PlaygroundSupport
 import GameplayKit
 
 
-let chain = BlockChain<String>(genesisBlock: Block<String>(data: "genesis", with: Date()))
+let chain = BlockChain<String>(genesisBlock: Block<String>(data: "genesis"))
 
-print("mining Block 1")
-chain.addNewBlock(Block<String>(data: "Block 1", with: Date()))
-
-print("mining Block 2")
-chain.addNewBlock(Block<String>(data: "Block 2", with: Date()))
-
-print("mining Block 3")
-chain.addNewBlock(Block<String>(data: "Block 3", with: Date()))
-
+let dataBlock = (1 ... 10).map({ "Block \($0)" })
+dataBlock.forEach({ chain.addNewBlock(Block<String>(data: $0)); print(Date()) })
 

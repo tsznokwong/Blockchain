@@ -9,14 +9,14 @@ public class Block<Element: Hashable>: CustomStringConvertible {
     public var hash: UInt
     public var nonce = 0
     
-    public init(data: Element, with timestamp: Date) {
+    public init(data: Element) {
         self.data = data
-        self.timestamp = timestamp
-        self.hash = UInt(bitPattern: abs("\(self.index)\(self.timestamp)\(self.previousHash)\(self.data)\(self.nonce)".hashValue))
+        self.timestamp = Date()
+        self.hash = UInt(bitPattern: "\(self.index)\(self.timestamp)\(self.previousHash)\(self.data)\(self.nonce)".hashValue)
     }
     
     public func calculateHash() -> UInt {
-        return UInt(bitPattern: abs("\(self.index)\(self.timestamp)\(self.previousHash)\(self.data)\(self.nonce)".hashValue))
+        return UInt(bitPattern: "\(self.index)\(self.timestamp)\(self.previousHash)\(self.data)\(self.nonce)".hashValue)
     }
     
     public func mineBlock(difficulty: Int) {
