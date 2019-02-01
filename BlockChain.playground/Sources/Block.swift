@@ -7,7 +7,7 @@ public class Block<Element: Hashable>: CustomStringConvertible {
     public var data: Element
     public var previousHash: UInt = 0
     public var hash: UInt
-    public var nonce = 0
+    public var nonce: Nonce = Nonce(length: 64)
     
     public init(data: Element) {
         self.data = data
@@ -19,10 +19,9 @@ public class Block<Element: Hashable>: CustomStringConvertible {
         return UInt(bitPattern: "\(self.index)\(self.timestamp)\(self.previousHash)\(self.data)\(self.nonce)".hashValue)
     }
     
-    public func mineBlock(difficulty: Int) {
-        let randomSource = GKRandomSource.sharedRandom()
-        while !self.hash.toString().hasPrefix(String(repeating: "0", count: difficulty)) {
-            self.nonce = randomSource.nextInt()
+    public func mineBlock(difficulty: UInt) {
+        while !self.hash.toString().hasPrefix(String(repeating: "0", count: Int(difficulty))) {
+            self.nonce.regenerate()
             self.hash = self.calculateHash()
         }
         print("Block mined: \(self)")
