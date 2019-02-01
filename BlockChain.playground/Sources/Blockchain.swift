@@ -14,7 +14,7 @@ public class BlockChain<Element: Hashable>: CustomStringConvertible {
     }
     
     public func addNewBlock(_ newBlock: Block<Element>) {
-        newBlock.previousHash = self.latestBlock()?.hash ?? 0
+        newBlock.previousHash = self.latestBlock()?.hash ?? ""
         newBlock.index = (self.latestBlock()?.index ?? 0) + 1
         newBlock.mineBlock(difficulty: self.difficulty)
         self.chain.append(newBlock)

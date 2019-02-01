@@ -5,22 +5,22 @@ public class Block<Element: Hashable>: CustomStringConvertible {
     public var index: Int = 0
     public var timestamp: Date
     public var data: Element
-    public var previousHash: UInt = 0
-    public var hash: UInt
+    public var previousHash: String = ""
+    public var hash: String = ""
     public var nonce: Nonce = Nonce(length: 64)
     
     public init(data: Element) {
         self.data = data
         self.timestamp = Date()
-        self.hash = UInt(bitPattern: "\(self.index)\(self.timestamp)\(self.previousHash)\(self.data)\(self.nonce)".hashValue)
+        self.hash = self.calculateHash()
     }
     
-    public func calculateHash() -> UInt {
-        return UInt(bitPattern: "\(self.index)\(self.timestamp)\(self.previousHash)\(self.data)\(self.nonce)".hashValue)
+    public func calculateHash() -> String {
+        return "\(self.index)\(self.timestamp)\(self.previousHash)\(self.data)\(self.nonce)".sha256
     }
     
     public func mineBlock(difficulty: UInt) {
-        while !self.hash.toString().hasPrefix(String(repeating: "0", count: Int(difficulty))) {
+        while !self.hash.hasPrefix(String(repeating: "0", count: Int(difficulty))) {
             self.nonce.regenerate()
             self.hash = self.calculateHash()
         }
@@ -32,8 +32,8 @@ public class Block<Element: Hashable>: CustomStringConvertible {
         {
         \(self.index), \(self.timestamp)
         \(self.data)
-        previousHash: \(self.previousHash.toString())
-        hash        : \(self.hash.toString())
+        previousHash: \(self.previousHash)
+        hash        : \(self.hash)
         }
         
         """
